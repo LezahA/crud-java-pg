@@ -1,32 +1,21 @@
-version: "3.9"
+ version: "3.9"
+
 services:
-  java_db:
-    container_name: java_db
-    image: mariadb:latest
-    ports:
-      - "3306:3306"
-    environment:
-      MARIADB_ROOT_PASSWORD: 123
-      MARIADB_DATABASE: usersCrud
-      MARIADB_USER: usuario
-      MARIADB_PASSWORD: 123
 
   java_app:
     container_name: java_app
-    image: crud-java:latest
+    image: crud-java:1.0
     build: .
     ports:
-      - "8080:8080"
-    environment:
-      DB_HOST: java_db
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: 123
-      DB_NAME: usersCrud
-      DB_DRIVER: org.mariadb.jdbc.Driver
-      DB_DIALECT: org.jooq.impl.MariaDBDialect
-      DB_SCHEMA: public
-    links:
-      - java_db
+      - 8080:8080
     depends_on:
       - java_db
+  java_db:
+    container_name: java_db
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
